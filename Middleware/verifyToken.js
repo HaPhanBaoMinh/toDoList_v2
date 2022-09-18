@@ -10,6 +10,7 @@ const findUserByID = async (userId) => {
 const verifyToken = async (req, res, next) => {
     const token = await req.get('token');
     if(!token) { res.status(401); }
+    console.log(token);
     try {
         const decoded = jwt.verify(token, process.env.REACT_APP_JWT_SIGN);
         const result = await findUserByID(decoded._id);

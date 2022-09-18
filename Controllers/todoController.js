@@ -33,8 +33,9 @@ const deleteToDo = async (req, res) => {
 }
 
 const updateTodo = async (req, res) => {
-    const _id = req.body._id
-    const updateTodo = req.body
+    const _id = await req.body._id
+    const updateTodo = await req.body
+    console.log(req);
     try {
         await todoList.findByIdAndUpdate(_id, updateTodo)
         res.status(200).send()    
