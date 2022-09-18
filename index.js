@@ -15,25 +15,22 @@ const MONGO_URL = process.env.REACT_APP_MONGO_URL
 const PORT = process.env.REACT_APP_PORT || 5000
 
 app.use(bodyParser.json({limit: "30mb", extended: "false" }));
+app.use(express.static(path.join(__dirname, '../my-app/build')));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: "true" }));
-app.use(express.static(path.join(__dirname, './build')));
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(cookieParser())
 app.use(express.static("public"));
 
-app.get("/demo", async (req, res) => {
-  res.json("Hello word")
-})
-
-app.get('/ui/*', async (req, res) => {
-  res.sendFile(path.join(__dirname, './build', 'index.html'));
-});
-
 app.use("/auth", loginRouter)
 app.use("/user", userRouter)
-app.use(verifyToken)
-app.use("/todo", toDoRouter)
+// app.use(verifyToken)
+app.use("/todo",verifyToken, toDoRouter)
+
+
+app.get('*',(req, res) => {
+   res.sendFile(path.join(__dirname, '../my-app/build', 'index.html'));
+});
 
 mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
