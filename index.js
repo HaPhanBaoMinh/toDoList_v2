@@ -22,8 +22,11 @@ app.use(cors());
 app.use(cookieParser())
 app.use(express.static("public"));
 
+app.get("/demo", async (req, res) => {
+  res.json("Hello word")
+})
 
-app.get('/ui/*', (req, res) => {
+app.get('/ui/*', async (req, res) => {
   res.sendFile(path.join(__dirname, './build', 'index.html'));
 });
 
