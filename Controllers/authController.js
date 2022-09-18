@@ -6,7 +6,7 @@ require('dotenv').config();
 const generateToken = async payload => {
     const {_id, username, password} = await payload
     const accessToken = jwt.sign({_id, username, password}, process.env.REACT_APP_JWT_SIGN, {
-        expiresIn: '5s'
+        expiresIn: '3h'
     });
     return accessToken
 }
