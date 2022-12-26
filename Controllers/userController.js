@@ -2,22 +2,24 @@ const userList = require("../Models/userSchema")
 
 const getInfoUser = async (req, res) => {
     const userid = await req.params['userid']
-    const info = await userList.findOne({userid: userid})
+    const info = await userList.findOne({ userid: userid })
     try {
-        res.status(200).json(info)    
+        res.status(200).json(info)
     } catch (error) {
         res.status(400).send()
     }
 }
 
 const addNewUser = async (req, res) => {
-    const user = await {...req.body}
-    const isContain = await userList.findOne({username: user.username})
-    console.log(isContain);
+    const user = await { ...req.body }
+    const isContain = await userList.findOne({ username: user.username })
     const userSave = new userList(user)
     try {
-        await userSave.save() 
-        res.status(200).send(userSave)    
+        if (isContain) {
+            res.status(409).send("This username is already taken")
+        }
+        await userSave.save()
+        res.status(200).send(userSave)
     } catch (error) {
         res.status(400).send()
     }
@@ -29,7 +31,7 @@ const updateUser = async (req, res) => {
 
     try {
         await userList.findByIdAndUpdate(_id, updateUser)
-        res.status(200).send()    
+        res.status(200).send()
     } catch (error) {
         res.status(400).send()
     }
@@ -40,10 +42,10 @@ const logoutUser = async (req, res) => {
     user.refreshToken = ""
     try {
         await userList.findByIdAndUpdate(user._id, user)
-        res.status(200).send()    
+        res.status(200).send()
     } catch (error) {
         res.status(400).send()
     }
 }
 
-module.exports = {getInfoUser, addNewUser, updateUser, logoutUser}
+module.exports = { getInfoUser, addNewUser, updateUser, logoutUser }
