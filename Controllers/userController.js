@@ -17,6 +17,7 @@ const addNewUser = async (req, res) => {
     try {
         if (isContain) {
             res.status(409).send("This username is already taken")
+            return
         }
         await userSave.save()
         res.status(200).send(userSave)
